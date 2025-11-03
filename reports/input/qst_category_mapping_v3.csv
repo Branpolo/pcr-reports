@@ -1,0 +1,208 @@
+# QST Category Mapping - v3 (Updated based on user feedback)
+#
+# CLASSIFICATION DISCREPANCIES:
+#   DISCREP_IN_ERROR - Unresolved
+#   DISCREP_IGNORED - Error ignored, result reported
+#   DISCREP_RESULT_CHANGED - Result changed (test repeated)
+#   DISCREP_NEEDS_CLS_DATA - BLA resolution, needs machine_cls/final_cls data
+#
+# SAMPLE SOP ERRORS:
+#   SOP_UNRESOLVED - Unresolved
+#   SOP_IGNORED - Error ignored, result reported
+#   SOP_REPEATED - Test repeated/excluded
+#
+# CONTROL ERRORS:
+#   CONTROL_UNRESOLVED - Unresolved
+#   CONTROL_IGNORED - Error ignored, deemed acceptable
+#   CONTROL_REPEATED - Control repeated/excluded
+#   CONTROL_AFFECTED_SAMPLE - INHERITED_*_FAILURE (for Controls appendix)
+#
+# VALID RESULTS:
+#   VALID_DETECTED - No error, DETECTED
+#   VALID_NOT_DETECTED - No error, NOT DETECTED
+#   VALID_CONTROL - No error, control well
+#   VALID_OTHER - No error, other status
+#
+# SPECIAL CATEGORIES:
+#   IGNORE_WELL - Wells to ignore (MIX_MISSING, UNKNOWN_MIX, etc.)
+#   NEEDS_REVIEW - Unclear, needs manual review
+#
+WELL_TYPE,ERROR_CODE,ERROR_MESSAGE,RESOLUTION_CODES,WELL_LIMS_STATUS,OCCURRENCE_COUNT,CATEGORY,NOTES
+SAMPLE,,,[],NOT DETECTED,280100,VALID_NOT_DETECTED,No error - NOT DETECTED
+SAMPLE,,,[],DETECTED,62533,VALID_DETECTED,No error - DETECTED
+CONTROL,,,[],,26788,VALID_CONTROL,"Passed control - No error, no lims, no resolution"
+SAMPLE,MIX_MISSING,The mix has not been recognised. Please fix and re-import,[],,22785,IGNORE_WELL,MIX_MISSING - Ignore such wells
+SAMPLE,INHERITED_EXTRACTION_FAILURE,An associated extraction control has failed. That error must be resolved before this well can be exported.,[],,8816,CONTROL_AFFECTED_SAMPLE,INHERITED_EXTRACTION_FAILURE - Affected sample for control (Controls appendix only)
+SAMPLE,THRESHOLD_WRONG,Incorrect threshold set. Please fix and re-import,[],,7005,SOP_UNRESOLVED,THRESHOLD_WRONG - Unresolved
+SAMPLE,,,SKIP,EXCLUDE,5414,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,INH_WELL,The IC is inhibited,[],,4729,SOP_UNRESOLVED,INH_WELL - Unresolved
+SAMPLE,,,[],,3472,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,ADJ_CT,Cross-contamination concern,[],,3065,SOP_UNRESOLVED,ADJ_CT - Unresolved
+SAMPLE,,,BLA,NOT DETECTED,2797,DISCREP_NEEDS_CLS_DATA,BLA + NOT DETECTED - Classification discrepancy (need machine_cls/final_cls)
+SAMPLE,DO_NOT_EXPORT,Flag as High CT - do not export without review,[],,2583,SOP_UNRESOLVED,DO_NOT_EXPORT - Unresolved
+SAMPLE,INCONCLUSIVE_WELL,Result is inconclusive,[],,2528,SOP_UNRESOLVED,INCONCLUSIVE_WELL - Unresolved
+SAMPLE,,,[],REAMP,2517,IGNORE_WELL,"No error code, standalone REAMP - Ignore such wells"
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,[],,2340,DISCREP_IN_ERROR,CLSDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,EXTRACTION_CONTROLS_MISSING,This well is missing the required associated extraction controls. Review required.,[],,2028,SOP_UNRESOLVED,EXTRACTION_CONTROLS_MISSING - Unresolved
+SAMPLE,,,BLA,DETECTED,1666,DISCREP_NEEDS_CLS_DATA,BLA + DETECTED - Classification discrepancy (need machine_cls/final_cls)
+CONTROL,THRESHOLD_WRONG,Incorrect threshold set. Please fix and re-import,[],,1374,SOP_UNRESOLVED,THRESHOLD_WRONG - Unresolved
+SAMPLE,,,[],REXCT,1327,IGNORE_WELL,"No error code, standalone REXCT - Ignore such wells"
+SAMPLE,,,SKIP,DETECTED,1241,SOP_IGNORED,"SKIP + DETECTED - Error suppressed, result reported"
+CONTROL,,,SKIP,,981,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,[],MPX & OPX NOT DETECTED,977,VALID_NOT_DETECTED,No error - NOT DETECTED
+SAMPLE,,,SKIP,REXCT,840,SOP_REPEATED,SKIP + REXCT - Test repeated due to suppressed error
+CONTROL,MIX_MISSING,The mix has not been recognised. Please fix and re-import,[],,816,IGNORE_WELL,MIX_MISSING - Ignore such wells
+SAMPLE,,,"SKIP,WDCLS",REXCT,797,DISCREP_IN_ERROR,"WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,,,[],HSV_NOT_DETECTED,777,VALID_NOT_DETECTED,No error - NOT DETECTED
+SAMPLE,,,SKIP,NOT DETECTED,663,SOP_IGNORED,"SKIP + NOT DETECTED - Error suppressed, result reported"
+SAMPLE,UNKNOWN_MIX,This sample has an unknown mix. Please fix and re-import,[],,486,IGNORE_WELL,UNKNOWN_MIX - Ignore such wells
+CONTROL,,,BLA,,422,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,[],INCONCLUSIVE,347,SOP_REPEATED,Inconclusive (no error code) - Counts as resolved error
+SAMPLE,INCORRECT_SIGMOID,There is an incorrect sigmoid in the target,[],,287,SOP_UNRESOLVED,INCORRECT_SIGMOID - Unresolved
+SAMPLE,ACCESSION_MISSING,The sample label has not been recognised. Please fix and re-import,[],,232,SOP_UNRESOLVED,ACCESSION_MISSING - Unresolved
+CONTROL,CONTROL_CLSDISC_WELL,There are one or more classification discrepancies in a control.,[],,223,DISCREP_IN_ERROR,CONTROL_CLSDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,CTDISC_WELL,There are one or more CT discrepancies.,[],,199,DISCREP_IN_ERROR,CTDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,INVALID ACCESSION,Sample label has an invalid accession. Edit the well to fix.,[],,187,SOP_UNRESOLVED,INVALID ACCESSION - Unresolved
+CONTROL,,,"SKIP,WG14S",,170,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,,,SKIP|SKIP,REXCT,156,SOP_REPEATED,SKIP|SKIP + REXCT - Test repeated due to suppressed error
+CONTROL,,,"SKIP,WG13S",,142,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,,,BLA|SKIP,EXCLUDE,136,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,[],MPX & OPX DETECTED,134,VALID_DETECTED,No error - DETECTED
+SAMPLE,,,SKIP,INCONCLUSIVE,116,SOP_REPEATED,Inconclusive (no error code) - Counts as resolved error
+SAMPLE,,,[],HSV1_DETECTED,111,VALID_DETECTED,No error - DETECTED
+CONTROL,FAILED_POS_WELL,The positive control has failed.,[],,109,SOP_UNRESOLVED,FAILED_POS_WELL - Unresolved
+SAMPLE,,,BLA|SKIP,DETECTED,100,DISCREP_NEEDS_CLS_DATA,BLA + DETECTED - Classification discrepancy (need machine_cls/final_cls)
+CONTROL,UNKNOWN_ROLE,Sample label contains an unknown role. Edit the well to fix.,[],,96,IGNORE_WELL,UNKNOWN_ROLE - Ignore such wells
+SAMPLE,,,[],HSV2_DETECTED,95,VALID_DETECTED,No error - DETECTED
+CONTROL,BICQUAL_WELL,IC inhibition detected,[],,93,SOP_UNRESOLVED,BICQUAL_WELL - Unresolved
+SAMPLE,,,[],TNP,91,SOP_REPEATED,TNP (no error code) - Resolved as error
+SAMPLE,,,SKIP|SKIP,EXCLUDE,87,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"SKIP,WDCLS|SKIP",EXCLUDE,82,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"SKIP,WDCT",EXCLUDE,78,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,THRESHOLD_MISSED,Threshold missing,[],,75,SOP_UNRESOLVED,THRESHOLD_MISSED - Unresolved
+CONTROL,,,"SKIP,RXP",REXCT,68,SOP_REPEATED,"SKIP,RXP + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RPA,WG14S",REAMP,52,SOP_REPEATED,"SKIP,RPA,WG14S + REAMP - Test repeated due to suppressed error"
+CONTROL,CNTRL_HAS_ACS,Accession number included. Check well.,[],,52,SOP_UNRESOLVED,CNTRL_HAS_ACS - Unresolved
+CONTROL,WG13S_HIGH_WELL,This control has failed the Westgard 1:3S rule with a high quantity,[],,50,SOP_UNRESOLVED,WG13S_HIGH_WELL - Unresolved
+SAMPLE,,,"SKIP,WDCLS",REAMP,48,DISCREP_IN_ERROR,"WDCLS/WDCT + REAMP = classification error, test repeated"
+SAMPLE,ADJ_CT,Cross-contamination concern,BLA,,42,SOP_UNRESOLVED,ADJ_CT - BLA alone not meaningful resolution
+CONTROL,,,"SKIP,RPA",REAMP,40,SOP_REPEATED,"SKIP,RPA + REAMP - Test repeated due to suppressed error"
+CONTROL,NEGATIVE_FAILURE_WELL,Neg control has failed,[],,39,SOP_UNRESOLVED,NEGATIVE_FAILURE_WELL - Unresolved
+CONTROL,WG12S_HIGH_WELL,This control has failed the Westgard 1:2S rule with a high quantity,[],,39,SOP_UNRESOLVED,WG12S_HIGH_WELL - Unresolved
+CONTROL,WG_IN_ERROR_WELL,A previous westgard control has failed for this mix.,[],,39,SOP_UNRESOLVED,WG_IN_ERROR_WELL - Unresolved
+CONTROL,INCORRECT_SIGMOID,There is an incorrect sigmoid in the target,[],,34,SOP_UNRESOLVED,INCORRECT_SIGMOID - Unresolved
+SAMPLE,LOW_FLUORESCENCE_WELL,Well has lower fluorescence than expected for ROX. Please review.,[],,34,SOP_UNRESOLVED,LOW_FLUORESCENCE_WELL - Unresolved
+CONTROL,,,"SKIP,WG22S",,30,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,BICQUAL_WELL,IC inhibition detected,[],,29,SOP_UNRESOLVED,BICQUAL_WELL - Unresolved
+CONTROL,WG13S_LOW_WELL,This control has failed the Westgard 1:3S rule with a low quantity,[],,29,SOP_UNRESOLVED,WG13S_LOW_WELL - Unresolved
+CONTROL,,,"SKIP,RPP",REAMP,27,SOP_REPEATED,"SKIP,RPP + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXA,WG14S",REXCT,27,SOP_REPEATED,"SKIP,RXA,WG14S + REXCT - Test repeated due to suppressed error"
+SAMPLE,INCORRECT_SIGMOID,HSV1 has an incorrect sigmoid,[],,27,SOP_UNRESOLVED,INCORRECT_SIGMOID - Unresolved
+SAMPLE,,,SKIP,TNP,26,SOP_REPEATED,TNP (no error code) - Resolved as error
+CONTROL,,,"SKIP,WG12S",,26,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,,,BLA|SKIP,REXCT,24,DISCREP_IN_ERROR,"BLA + REXCT - Classification discrepancy, test repeated"
+CONTROL,,,"SKIP,WDCLSC",REAMP,24,DISCREP_IN_ERROR,"WDCLS/WDCT + REAMP = classification error, test repeated"
+SAMPLE,BAD_CT_DELTA,CT value differences with non IC targets in a well,[],,23,SOP_UNRESOLVED,BAD_CT_DELTA - Unresolved
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,[],NOT DETECTED,23,DISCREP_IN_ERROR,CLSDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+CONTROL,WG12S_LOW_WELL,This control has failed the Westgard 1:2S rule with a low quantity,[],,23,SOP_UNRESOLVED,WG12S_LOW_WELL - Unresolved
+SAMPLE,DO_NOT_EXPORT,Flag as High CT - do not export without review,BLA,,22,SOP_UNRESOLVED,DO_NOT_EXPORT - BLA alone not meaningful resolution
+SAMPLE,,,SKIP,REAMP,21,SOP_REPEATED,SKIP + REAMP - Test repeated due to suppressed error
+CONTROL,,,SKIP,EXCLUDE,19,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+CONTROL,,,"SKIP,RPA,WG13S",REAMP,19,SOP_REPEATED,"SKIP,RPA,WG13S + REAMP - Test repeated due to suppressed error"
+SAMPLE,,,BLA|BLA,NOT DETECTED,18,DISCREP_NEEDS_CLS_DATA,BLA + NOT DETECTED - Classification discrepancy (need machine_cls/final_cls)
+CONTROL,,,"SKIP,WDCLSC",REXCT,18,DISCREP_IN_ERROR,"WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,NEGATIVE_FAILURE_WELL,Neg control has failed,[],,18,SOP_UNRESOLVED,NEGATIVE_FAILURE_WELL - Unresolved
+CONTROL,,,"SKIP,WG14S",EXCLUDE,17,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"SKIP,WDCLS",TNP,16,SOP_REPEATED,TNP (no error code) - Resolved as error
+SAMPLE,,,BLA|SKIP,NOT DETECTED,15,DISCREP_NEEDS_CLS_DATA,BLA + NOT DETECTED - Classification discrepancy (need machine_cls/final_cls)
+CONTROL,,,"SKIP,WG13S",EXCLUDE,15,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"WDCLS,SETPOS,WDCT",DETECTED,15,DISCREP_IGNORED,WDCLS/WDCT + DETECTED = classification error ignored
+CONTROL,CONTROL_CTDISC_WELL,There are one or more CT discrepancies in a control.,[],,15,DISCREP_IN_ERROR,CONTROL_CTDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,WG12S_LOW_WELL,This control has failed the Westgard 1:2S rule with a low quantity,[],,15,SOP_UNRESOLVED,WG12S_LOW_WELL - Unresolved
+SAMPLE,,,SKIP,,13,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,THERMOCYCLER_UNKNOWN,Instrument ID does not exist. Verify the correct Instrument ID has been imported. Support will need to be contacted to add new Instrument ID to the sy,[],,12,SOP_UNRESOLVED,THERMOCYCLER_UNKNOWN - Unresolved
+SAMPLE,,,SKIP|SKIP,REAMP,11,SOP_REPEATED,SKIP|SKIP + REAMP - Test repeated due to suppressed error
+SAMPLE,,,SKIP,RXT,10,SOP_REPEATED,SKIP + RXT - Test repeated due to suppressed error
+CONTROL,,,"SKIP,WG7T",,10,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,,,SKIP|SKIP,NOT DETECTED,10,SOP_IGNORED,"SKIP|SKIP + NOT DETECTED - Error suppressed, result reported"
+SAMPLE,CNTRL_HAS_ACS,Accession number included. Check well.,[],,10,SOP_UNRESOLVED,CNTRL_HAS_ACS - Unresolved
+CONTROL,LOW_FLUORESCENCE_WELL,Well has lower fluorescence than expected for ROX. Please review.,[],,10,SOP_UNRESOLVED,LOW_FLUORESCENCE_WELL - Unresolved
+CONTROL,WG14S_LOW_WELL,This control has failed the Westgard 1:4S rule with a low quantity,[],,10,SOP_UNRESOLVED,WG14S_LOW_WELL - Unresolved
+SAMPLE,,,BLA,,9,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+CONTROL,,,BLA|SKIP,,9,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,"SKIP,RXP",REXCT,9,SOP_REPEATED,"SKIP,RXP + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXA",REXCT,8,SOP_REPEATED,"SKIP,RXA + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXA,WG13S",REXCT,8,SOP_REPEATED,"SKIP,RXA,WG13S + REXCT - Test repeated due to suppressed error"
+SAMPLE,,,"SKIP,WG14S",,8,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+CONTROL,,,BLA|BLA,,7,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,SKIP|SKIP,TNP,7,SOP_REPEATED,TNP (no error code) - Resolved as error
+SAMPLE,DO_NOT_EXPORT,High CT. The well can not be exported.,[],,7,SOP_UNRESOLVED,DO_NOT_EXPORT - Unresolved
+CONTROL,EXTRACTION_INSTRUMENT_MISSING,The sample label has not been recognised. Please fix and re-import. Error Code: EXTRACTION_INSTRUMENT_MISSING,[],,7,SOP_UNRESOLVED,EXTRACTION_INSTRUMENT_MISSING - Unresolved
+SAMPLE,INH_WELL,The IC is inhibited,BLA,,7,SOP_UNRESOLVED,INH_WELL - BLA alone not meaningful resolution
+CONTROL,WESTGARDS_MISSED,Westgard limits are required but not found. Set Mean & SD before analysing the run.,[],,7,SOP_UNRESOLVED,WESTGARDS_MISSED - Unresolved
+CONTROL,WG14S_HIGH_WELL,This control has failed the Westgard 1:4S rule with a high quantity,[],,7,SOP_UNRESOLVED,WG14S_HIGH_WELL - Unresolved
+CONTROL,,,"SKIP,RPN,WG14S",REAMP,6,SOP_REPEATED,"SKIP,RPN,WG14S + REAMP - Test repeated due to suppressed error"
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,[],DETECTED,6,DISCREP_IN_ERROR,CLSDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,INVALID_PASSIVE_READINGS,Passive readings are invalid (contains zero values),[],,6,SOP_UNRESOLVED,INVALID_PASSIVE_READINGS - Unresolved
+CONTROL,UNKNOWN_MIX,This sample has an unknown mix. Please fix and re-import,[],,6,IGNORE_WELL,UNKNOWN_MIX - Ignore such wells
+SAMPLE,,,BLA,MPX & OPX NOT DETECTED,5,DISCREP_NEEDS_CLS_DATA,BLA + NOT DETECTED - Classification discrepancy (need machine_cls/final_cls)
+CONTROL,THERMOCYCLER_UNKNOWN,Instrument ID does not exist. Verify the correct Instrument ID has been imported. Support will need to be contacted to add new Instrument ID to the sy,[],,5,SOP_UNRESOLVED,THERMOCYCLER_UNKNOWN - Unresolved
+SAMPLE,,,BLA,INCONCLUSIVE,4,SOP_REPEATED,Inconclusive (no error code) - Counts as resolved error
+SAMPLE,,,"SKIP,WDCLS|SKIP",REXCT,4,DISCREP_IN_ERROR,"WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,,,"SKIP,WDCTC",EXCLUDE,4,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"WDCLSC,SETNEG",,4,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,EXTRACTION_INSTRUMENT_MISSING,The sample label has not been recognised. Please fix and re-import. Error Code: EXTRACTION_INSTRUMENT_MISSING,[],,4,SOP_UNRESOLVED,EXTRACTION_INSTRUMENT_MISSING - Unresolved
+CONTROL,,,BLA|SKIP,EXCLUDE,3,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+CONTROL,,,"BLA|SKIP,RXP",REXCT,3,DISCREP_IN_ERROR,"BLA + REXCT - Classification discrepancy, test repeated"
+CONTROL,,,"BLA|SKIP,WG13S",,3,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+SAMPLE,,,SKIP,RPT,3,SOP_REPEATED,SKIP + RPT - Test repeated due to suppressed error
+SAMPLE,,,"SKIP,RPP",REAMP,3,SOP_REPEATED,"SKIP,RPP + REAMP - Test repeated due to suppressed error"
+SAMPLE,,,"SKIP,RXA",REXCT,3,SOP_REPEATED,"SKIP,RXA + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,WDCTC",EXCLUDE,3,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,INCONCLUSIVE_WELL,Result is inconclusive,BLA,,3,SOP_UNRESOLVED,INCONCLUSIVE_WELL - BLA alone not meaningful resolution
+CONTROL,NEGATIVE_FAILURE_WELL,Neg control has failed,BLA,,3,SOP_UNRESOLVED,NEGATIVE_FAILURE_WELL - BLA alone not meaningful resolution
+SAMPLE,,,[],HSV_DETECTED,2,VALID_DETECTED,No error - DETECTED
+SAMPLE,,,BLA|BLA,DETECTED,2,DISCREP_NEEDS_CLS_DATA,BLA + DETECTED - Classification discrepancy (need machine_cls/final_cls)
+SAMPLE,,,BLA|SKIP,INCONCLUSIVE,2,SOP_REPEATED,Inconclusive (no error code) - Counts as resolved error
+CONTROL,,,"BLA|SKIP,WG14S",,2,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+CONTROL,,,BPEC,,2,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,"SKIP,WDCT|SKIP",TNP,2,SOP_REPEATED,TNP (no error code) - Resolved as error
+CONTROL,,,"SKIP,WG12S",EXCLUDE,2,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"WDCLS,SETNEG",NOT DETECTED,2,DISCREP_IGNORED,WDCLS/WDCT + NOT DETECTED = classification error ignored
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,BLA,,2,DISCREP_IN_ERROR,CLSDISC_WELL - Classification discrepancy
+SAMPLE,CONTROL_CLSDISC_WELL,There are one or more classification discrepancies in a control.,[],,2,DISCREP_IN_ERROR,CONTROL_CLSDISC_WELL - Classification discrepancy (requires machine_cls/final_cls to determine if result changed)
+SAMPLE,INCORRECT_POSITIVE_SIGMOID,There is an incorrect sigmoid in the positive target well,[],,2,SOP_UNRESOLVED,INCORRECT_POSITIVE_SIGMOID - Unresolved
+SAMPLE,WG14S_LOW_WELL,This control has failed the Westgard 1:4S rule with a low quantity,[],,2,SOP_UNRESOLVED,WG14S_LOW_WELL - Unresolved
+SAMPLE,,,BLA|BLA|SKIP,REXCT,1,DISCREP_IN_ERROR,"BLA + REXCT - Classification discrepancy, test repeated"
+CONTROL,,,"BLA|BLA|SKIP,WG12S",,1,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+CONTROL,,,BLA|SKIP,DETECTED,1,DISCREP_NEEDS_CLS_DATA,BLA + DETECTED - Classification discrepancy (need machine_cls/final_cls)
+SAMPLE,,,BLA|SKIP,REAMP,1,DISCREP_IN_ERROR,"BLA + REAMP - Classification discrepancy, test repeated"
+CONTROL,,,"BLA|SKIP,RPP",REAMP,1,DISCREP_IN_ERROR,"BLA + REAMP - Classification discrepancy, test repeated"
+CONTROL,,,"BLA|SKIP,WG12S",,1,SOP_IGNORED,SKIP + Westgard pattern - Control error ignored
+CONTROL,,,"BLA|SKIP,WG13S",EXCLUDE,1,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"BLA|SKIP,WG13S",EXCLUDE,1,SOP_REPEATED,Excluded (no error code) - Counts as resolved error
+SAMPLE,,,"SKIP,RPA",REAMP,1,SOP_REPEATED,"SKIP,RPA + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RPA,WG12S",REAMP,1,SOP_REPEATED,"SKIP,RPA,WG12S + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RPA,WG14S|SKIP,RPA,WG14S",REAMP,1,SOP_REPEATED,"SKIP,RPA,WG14S|SKIP,RPA,WG14S + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RPN,WG13S",REAMP,1,SOP_REPEATED,"SKIP,RPN,WG13S + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RPN,WG13S|SKIP,RPA,WG13S",REAMP,1,SOP_REPEATED,"SKIP,RPN,WG13S|SKIP,RPA,WG13S + REAMP - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXA,WG22S",REXCT,1,SOP_REPEATED,"SKIP,RXA,WG22S + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXA,WG7T",REXCT,1,SOP_REPEATED,"SKIP,RXA,WG7T + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXN,WG13S",REXCT,1,SOP_REPEATED,"SKIP,RXN,WG13S + REXCT - Test repeated due to suppressed error"
+CONTROL,,,"SKIP,RXN,WG14S",REXCT,1,SOP_REPEATED,"SKIP,RXN,WG14S + REXCT - Test repeated due to suppressed error"
+SAMPLE,,,"SKIP,SETNEG",,1,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+CONTROL,,,"SKIP,TNA,WG13S",TNP,1,SOP_REPEATED,TNP (no error code) - Resolved as error
+CONTROL,,,"SKIP,TNA,WG14S",TNP,1,SOP_REPEATED,TNP (no error code) - Resolved as error
+CONTROL,,,"SKIP,WDCLSC",TNP,1,SOP_REPEATED,TNP (no error code) - Resolved as error
+SAMPLE,,,"SKIP,WDCLS|SKIP,WDCLS",REXCT,1,DISCREP_IN_ERROR,"WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,,,"SKIP,WDCT|SKIP",REXCT,1,DISCREP_IN_ERROR,"WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,,,"SKIP,WG13S",,1,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,,,SKIP|SKIP,DETECTED,1,SOP_IGNORED,"SKIP|SKIP + DETECTED - Error suppressed, result reported"
+CONTROL,,,"WDCLSC,SETPOS",,1,IGNORE_WELL,"No error, no lims_status - Ignore such wells"
+SAMPLE,ACCESSION_MISSING,The sample label has not been recognised. Please fix and re-import,"SKIP,WDCLS",REXCT,1,DISCREP_IN_ERROR,"ACCESSION_MISSING - WDCLS/WDCT + REXCT = classification error, test repeated"
+SAMPLE,ADJ_CT,Cross-contamination concern,BLA|BLA,,1,SOP_UNRESOLVED,ADJ_CT - BLA alone not meaningful resolution
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,[],TNP,1,SOP_REPEATED,CLSDISC_WELL - TNP = resolved as error
+SAMPLE,CLSDISC_WELL,There are one or more classification discrepancies.,BLA|BLA,,1,DISCREP_IN_ERROR,CLSDISC_WELL - Classification discrepancy
+CONTROL,WG12S_LOW_WELL,This control has failed the Westgard 1:2S rule with a low quantity,BLA,,1,SOP_UNRESOLVED,WG12S_LOW_WELL - BLA alone not meaningful resolution
+CONTROL,WG13S_HIGH_WELL,This control has failed the Westgard 1:3S rule with a high quantity,BLA,,1,SOP_UNRESOLVED,WG13S_HIGH_WELL - BLA alone not meaningful resolution
+CONTROL,WG22S_HIGH_WELL,This control has failed the Westgard 2:2S rule with a high quantity,[],,1,SOP_UNRESOLVED,WG22S_HIGH_WELL - Unresolved
