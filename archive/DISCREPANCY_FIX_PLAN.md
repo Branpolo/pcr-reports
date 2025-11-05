@@ -90,7 +90,7 @@ Rationale: The control-affected exclusion is now handled in the early suppressio
 ```bash
 python3 -m reports.extract_report_with_curves combined \
   --db-type qst \
-  --db /home/azureuser/code/wssvc-flow/input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/final/qst_full_csv.json \
   --sample-since-date 2024-06-01 --sample-until-date 2025-05-31 \
   --control-since-date 2024-06-01 --control-until-date 2025-05-31 \

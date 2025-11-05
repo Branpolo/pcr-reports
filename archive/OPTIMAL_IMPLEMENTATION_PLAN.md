@@ -101,7 +101,7 @@ import os
 DB_CONFIGS = {
     'qst': {
         'name': 'QST Production',
-        'db_path': 'input_data/readings.db',
+        'db_path': '~/dbs/readings.db',
         'category_csv': 'output_data/qst_category_mapping_v1.csv',
 
         # Control detection SQL (injected into WHERE clauses)
@@ -128,7 +128,7 @@ DB_CONFIGS = {
 
     'notts': {
         'name': 'Nottingham',
-        'db_path': 'input_data/notts.db',
+        'db_path': '~/dbs/notts.db',
         'category_csv': 'output_data/notts_category_mapping_v1.csv',
 
         'control_where': """
@@ -156,7 +156,7 @@ DB_CONFIGS = {
 
     'vira': {
         'name': 'Vira',
-        'db_path': 'input_data/vira.db',
+        'db_path': '~/dbs/vira.db',
         'category_csv': 'output_data/vira_category_mapping_v1.csv',
 
         'control_where': """

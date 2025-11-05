@@ -80,7 +80,7 @@ wssvc-flow-codex/
 ```bash
 # From project root, use module syntax:
 python3 -m reports.extract_report_with_curves combined \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/combined_report.json \
   --html-output output_data/unified_report.html \
   --sample-since-date 2024-06-01 \

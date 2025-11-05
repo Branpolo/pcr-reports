@@ -18,7 +18,7 @@ This repository contains error report generation tools for Quest/Notts/Vira PCR 
 
 **Purpose**: Error report generation from Quest/Notts/Vira databases
 - **Active scripts**: `extract_report_with_curves.py`, `generate_report_from_json_with_graphs.py`, `generate_xlsx_from_json.py`, `generate_summary_report.py`
-- **Databases**: Quest/Notts/Vira production databases (e.g., `/path/to/quest_prod_aug2025.db`)
+- **Databases**: Quest/Notts/Vira production databases in `~/dbs/` (e.g., `~/dbs/quest_prod_aug2025.db`)
 - **Output**: JSON, HTML, XLSX error reports
 - **Documentation**: `reports/docs/`
 
@@ -118,7 +118,7 @@ conn = sqlite3.connect(config['db_path'])
 # Test QST report extraction
 python3 -m reports.extract_report_with_curves combined \
   --db-type qst \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/test_qst.json \
   --sample-since-date 2024-06-01 \
   --sample-limit 100

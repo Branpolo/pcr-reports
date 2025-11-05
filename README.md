@@ -40,7 +40,7 @@ Legacy scripts remain available under `reports/archive/2025-10-10/` if you need 
 # Generate JSON + HTML + XLSX + Summary in one command
 python3 -m reports.generate_full_report \
   --db-type qst \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --since-date 2024-06-01 \
   --until-date 2025-05-31 \
   --output-prefix output_data/qst_production
@@ -59,7 +59,7 @@ This creates:
 ```bash
 python3 -m reports.extract_report_with_curves combined \
   --db-type qst \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/combined_report.json \
   --sample-since-date 2024-06-01 \
   --control-since-date 2024-06-01 \
@@ -112,7 +112,7 @@ python3 -m reports.extract_report_with_curves <subcommand> [options]
 
 ```bash
 python3 -m reports.extract_report_with_curves sample \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/sample_report_since20240601.json \
   --since-date 2024-06-01 \
   --max-controls 3
@@ -122,7 +122,7 @@ python3 -m reports.extract_report_with_curves sample \
 
 ```bash
 python3 -m reports.extract_report_with_curves combined \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/unified_report_since20240601.json \
   --sample-since-date 2024-06-01 \
   --control-since-date 2024-06-01 \
@@ -245,21 +245,21 @@ Specify the database type when running report extraction:
 # QST/Quest database with automatic CSV mapping
 python3 -m reports.extract_report_with_curves combined \
   --db-type qst \
-  --db /path/to/quest_prod.db \
+  --db ~/dbs/quest_prod.db \
   --output output_data/qst_report.json \
   --sample-since-date 2024-06-01
 
 # Nottingham database with automatic CSV mapping
 python3 -m reports.extract_report_with_curves combined \
   --db-type notts \
-  --db /path/to/notts.db \
+  --db ~/dbs/notts.db \
   --output output_data/notts_report.json \
   --sample-since-date 2024-06-01
 
 # Viracor database with automatic CSV mapping
 python3 -m reports.extract_report_with_curves combined \
   --db-type vira \
-  --db /path/to/vira.db \
+  --db ~/dbs/vira.db \
   --output output_data/vira_report.json \
   --sample-since-date 2024-06-01
 ```
@@ -288,7 +288,7 @@ To update categorization for a specific database:
    ```bash
    python3 analyze_categories.py \
      --db-type qst \
-     --db /path/to/quest_prod.db \
+     --db ~/dbs/quest_prod.db \
      --output output_data/qst_category_mapping_TEMPLATE.csv
    ```
 
@@ -309,7 +309,7 @@ To update categorization for a specific database:
    ```bash
    python3 -m reports.extract_report_with_curves combined \
      --db-type qst \
-     --db /path/to/quest_prod.db \
+     --db ~/dbs/quest_prod.db \
      --output output_data/qst_test.json \
      --sample-since-date 2024-06-01
    ```
@@ -329,7 +329,7 @@ Use this when you need to refresh the QST discrepancy database from CSV extracts
 
 ```bash
 python3 -m reports.import_qst_data \
-  --csv input_data/qst_prod-discreps-newcolumns.csv \
+  --csv ~/dbs/qst_prod-discreps-newcolumns.csv \
   --db qst_discreps.db \
   --reset
 ```
@@ -342,7 +342,7 @@ The script normalises JSON readings into discrete columns and creates supporting
 
 ```bash
 python3 -m reports.non_inverted_sigmoid_gen_html \
-  --db input_data/quest_prod_aug2025.db \
+  --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/non_inverted_sigmoid_report.html
 ```
 

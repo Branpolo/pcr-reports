@@ -265,19 +265,19 @@ Generate baseline reports using current hardcoded logic:
 ```bash
 # QST baseline
 python3 extract_report_with_curves.py \
-  --db input_data/readings.db \
+  --db ~/dbs/readings.db \
   --output output_data/qst_baseline_report.json \
   --since 2024-06-01
 
 # Notts baseline
 python3 extract_report_with_curves.py \
-  --db input_data/notts.db \
+  --db ~/dbs/notts.db \
   --output output_data/notts_baseline_report.json \
   --since 2024-06-01
 
 # Vira baseline
 python3 extract_report_with_curves.py \
-  --db input_data/vira.db \
+  --db ~/dbs/vira.db \
   --output output_data/vira_baseline_report.json \
   --since 2024-06-01
 ```
@@ -337,7 +337,7 @@ After implementing CSV-driven categorization:
 ```bash
 # Generate new reports with same parameters
 python3 extract_report_with_curves.py \
-  --db input_data/readings.db \
+  --db ~/dbs/readings.db \
   --output output_data/qst_csv_driven_report.json \
   --since 2024-06-01
 

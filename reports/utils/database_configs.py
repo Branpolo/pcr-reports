@@ -15,7 +15,7 @@ import os
 DB_CONFIGS = {
     'qst': {
         'name': 'QST Production',
-        'db_path': 'input/quest_prod_aug2025.db',
+        'db_path': os.path.expanduser('~/dbs/quest_prod_aug2025.db'),
         'category_csv': 'input/qst_category_mapping_v3.csv',
 
         # Control detection SQL (injected into WHERE clauses)
@@ -44,7 +44,7 @@ DB_CONFIGS = {
 
     'notts': {
         'name': 'Nottingham',
-        'db_path': 'input/notts.db',
+        'db_path': os.path.expanduser('~/dbs/notts.db'),
         'category_csv': 'input/notts_category_mapping_v1.csv',
 
         # Control detection SQL
@@ -80,7 +80,7 @@ DB_CONFIGS = {
 
     'vira': {
         'name': 'Vira',
-        'db_path': 'input/vira.db',
+        'db_path': os.path.expanduser('~/dbs/vira.db'),
         'category_csv': 'input/vira_category_mapping_v1.csv',
 
         # Control detection SQL
