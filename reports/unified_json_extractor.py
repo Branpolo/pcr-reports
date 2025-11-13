@@ -19,7 +19,7 @@ from collections import defaultdict
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from database_configs import get_config
+from reports.utils.database_configs import get_config
 from reports.utils.report_helpers import (
     connect_sqlite,
     decode_readings,

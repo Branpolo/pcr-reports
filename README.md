@@ -42,7 +42,7 @@ python3 -m reports.generate_full_report \
   --db-type qst \
   --db ~/dbs/quest_prod_aug2025.db \
   --since-date 2024-06-01 \
-  --until-date 2025-05-31 \
+  --until-date 2025-01-31 \
   --output-prefix output_data/qst_production
 ```
 
