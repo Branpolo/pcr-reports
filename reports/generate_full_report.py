@@ -23,21 +23,25 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Notts report with default outputs in output_data/
-  python3 -m reports.generate_full_report --db-type notts --db input/notts.db --limit 100
-
-  # Quest report with base output path (generates .json, .html, .xlsx, _summary.html)
-  python3 -m reports.generate_full_report --db-type qst --db input/quest.db \\
-      --output output_data/final/qst_unified \\
-      --sample-since-date 2024-06-01 \\
-      --exclude-from-sop "%SIGMOID%" \\
+  # Unified date range (applies to samples, controls, and discrepancies)
+  python3 -m reports.generate_full_report --db-type qst --db ~/dbs/quest_prod.db \\
+      --since-date 2024-06-01 --until-date 2025-01-31 \\
+      --output output_data/qst_report \\
       --suppress-unaffected-controls
 
+  # Fine-grained control (different dates for each report type)
+  python3 -m reports.generate_full_report --db-type qst --db ~/dbs/quest_prod.db \\
+      --sample-since-date 2024-06-01 --control-since-date 2024-06-01 \\
+      --discrepancy-since-date 2024-01-01 \\
+      --exclude-from-sop "%SIGMOID%"
+
+  # Notts report with default outputs
+  python3 -m reports.generate_full_report --db-type notts --db ~/dbs/notts.db \\
+      --since-date 2024-06-01 --limit 100
+
   # Vira report with individual output paths
-  python3 -m reports.generate_full_report --db-type vira --db input/vira.db \\
-      --json output_data/vira.json \\
-      --html output_data/vira.html \\
-      --xlsx output_data/vira.xlsx
+  python3 -m reports.generate_full_report --db-type vira --db ~/dbs/vira.db \\
+      --json output_data/vira.json --html output_data/vira.html --xlsx output_data/vira.xlsx
         """
     )
 
@@ -47,19 +51,25 @@ Examples:
     parser.add_argument('--db', required=True,
                        help='Path to SQLite database file')
 
-    # Date filters
+    # Unified date filters (apply to all reports)
+    parser.add_argument('--since-date',
+                       help='Unified start date for all reports (YYYY-MM-DD). Overridden by report-specific filters.')
+    parser.add_argument('--until-date',
+                       help='Unified end date for all reports (YYYY-MM-DD). Overridden by report-specific filters.')
+
+    # Fine-grained date filters (override unified filters)
     parser.add_argument('--sample-since-date',
-                       help='Sample report start date (YYYY-MM-DD)')
+                       help='Sample report start date (YYYY-MM-DD). Overrides --since-date.')
     parser.add_argument('--sample-until-date',
-                       help='Sample report end date (YYYY-MM-DD)')
+                       help='Sample report end date (YYYY-MM-DD). Overrides --until-date.')
     parser.add_argument('--control-since-date',
-                       help='Control report start date (YYYY-MM-DD)')
+                       help='Control report start date (YYYY-MM-DD). Overrides --since-date.')
     parser.add_argument('--control-until-date',
-                       help='Control report end date (YYYY-MM-DD)')
+                       help='Control report end date (YYYY-MM-DD). Overrides --until-date.')
     parser.add_argument('--discrepancy-since-date',
-                       help='Discrepancy report start date (YYYY-MM-DD)')
+                       help='Discrepancy report start date (YYYY-MM-DD). Overrides --since-date.')
     parser.add_argument('--discrepancy-until-date',
-                       help='Discrepancy report end date (YYYY-MM-DD)')
+                       help='Discrepancy report end date (YYYY-MM-DD). Overrides --until-date.')
     parser.add_argument('--discrepancy-date-field',
                        choices=['upload', 'extraction'],
                        help='Date field for discrepancy filtering')
@@ -145,19 +155,26 @@ Examples:
     if args.db_type:
         json_cmd.extend(['--db-type', args.db_type])
 
-    # Add date filters
-    if args.sample_since_date:
-        json_cmd.extend(['--sample-since-date', args.sample_since_date])
-    if args.sample_until_date:
-        json_cmd.extend(['--sample-until-date', args.sample_until_date])
-    if args.control_since_date:
-        json_cmd.extend(['--control-since-date', args.control_since_date])
-    if args.control_until_date:
-        json_cmd.extend(['--control-until-date', args.control_until_date])
-    if args.discrepancy_since_date:
-        json_cmd.extend(['--discrepancy-since-date', args.discrepancy_since_date])
-    if args.discrepancy_until_date:
-        json_cmd.extend(['--discrepancy-until-date', args.discrepancy_until_date])
+    # Add date filters (fine-grained override unified)
+    sample_since = args.sample_since_date or args.since_date
+    sample_until = args.sample_until_date or args.until_date
+    control_since = args.control_since_date or args.since_date
+    control_until = args.control_until_date or args.until_date
+    discrepancy_since = args.discrepancy_since_date or args.since_date
+    discrepancy_until = args.discrepancy_until_date or args.until_date
+
+    if sample_since:
+        json_cmd.extend(['--sample-since-date', sample_since])
+    if sample_until:
+        json_cmd.extend(['--sample-until-date', sample_until])
+    if control_since:
+        json_cmd.extend(['--control-since-date', control_since])
+    if control_until:
+        json_cmd.extend(['--control-until-date', control_until])
+    if discrepancy_since:
+        json_cmd.extend(['--discrepancy-since-date', discrepancy_since])
+    if discrepancy_until:
+        json_cmd.extend(['--discrepancy-until-date', discrepancy_until])
     if args.discrepancy_date_field:
         json_cmd.extend(['--discrepancy-date-field', args.discrepancy_date_field])
 

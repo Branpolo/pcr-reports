@@ -36,14 +36,16 @@ Legacy scripts remain available under `reports/archive/2025-10-10/` if you need 
 
 ### 1. Generate Complete Report Bundle
 
+**Unified date filtering (applies to samples, controls, and discrepancies):**
+
 ```bash
-# Generate JSON + HTML + XLSX + Summary in one command
+# Simple: single date range for all reports
 python3 -m reports.generate_full_report \
   --db-type qst \
   --db ~/dbs/quest_prod_aug2025.db \
   --since-date 2024-06-01 \
   --until-date 2025-01-31 \
-  --output-prefix output_data/qst_production
+  --output output_data/qst_production
 ```
 
 This creates:
@@ -52,7 +54,47 @@ This creates:
 - `qst_production.xlsx` - Excel export with summary sheet
 - `qst_production_summary.html` - Executive summary with charts
 
-### 2. Step-by-Step Workflow
+**Note:** The new `--since-date` and `--until-date` flags apply to **ALL** reports (samples, controls, AND discrepancies), making it easy to extract a consistent date range across all report types.
+
+### 2. Date Range Filtering
+
+The reporting system supports two approaches to date filtering:
+
+#### Unified Date Filtering (Recommended)
+
+Use `--since-date` and `--until-date` to apply the same date range to **all** report types:
+
+```bash
+python3 -m reports.generate_full_report \
+  --db-type qst \
+  --db ~/dbs/quest_prod_aug2025.db \
+  --since-date 2024-06-01 \
+  --until-date 2025-01-31 \
+  --output output_data/qst_report
+```
+
+This applies the date range to:
+- ✅ Sample errors
+- ✅ Control errors
+- ✅ Classification discrepancies
+
+#### Fine-Grained Date Filtering
+
+Use report-specific flags to set different dates for each report type:
+
+```bash
+python3 -m reports.generate_full_report \
+  --db-type qst \
+  --db ~/dbs/quest_prod_aug2025.db \
+  --sample-since-date 2024-06-01 \
+  --control-since-date 2024-06-01 \
+  --discrepancy-since-date 2024-01-01 \
+  --output output_data/qst_report
+```
+
+**Note:** Fine-grained filters override unified filters when both are specified.
+
+### 3. Step-by-Step Workflow
 
 #### Extract Data to JSON
 
@@ -61,9 +103,8 @@ python3 -m reports.extract_report_with_curves combined \
   --db-type qst \
   --db ~/dbs/quest_prod_aug2025.db \
   --output output_data/combined_report.json \
-  --sample-since-date 2024-06-01 \
-  --control-since-date 2024-06-01 \
-  --discrepancy-since-date 2024-06-01
+  --since-date 2024-06-01 \
+  --until-date 2025-01-31
 ```
 
 #### Generate HTML Report
@@ -93,7 +134,7 @@ python3 -m reports.generate_xlsx_from_json \
 
 ## Unified JSON Extractor
 
-Run with module syntax so imports resolve correctly:
+The JSON extractor supports both unified and fine-grained date filtering. Run with module syntax so imports resolve correctly:
 
 ```bash
 python3 -m reports.extract_report_with_curves <subcommand> [options]
@@ -101,35 +142,115 @@ python3 -m reports.extract_report_with_curves <subcommand> [options]
 
 ### Subcommands & Key Options
 
-| Subcommand | Purpose | Common Flags |
+| Subcommand | Purpose | Key Flags |
 | --- | --- | --- |
-| `sample` | Sample error report JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--include-label-errors`, `--max-controls` |
-| `control` | Control error report JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--no-curves`, `--max-controls` |
-| `discrepancy` | QST discrepancy JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--date-field {upload,extraction}`, `--max-controls` |
-| `combined` | Builds sample+control+discrepancy payload in a single JSON | accepts all per-report filters plus `--html-output` and `--html-max-per-category` |
+| `sample` | Sample error report JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--until-date YYYY-MM-DD`, `--include-label-errors`, `--max-controls` |
+| `control` | Control error report JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--until-date YYYY-MM-DD`, `--suppress-unaffected-controls`, `--max-controls` |
+| `discrepancy` | QST discrepancy JSON | `--db PATH`, `--since-date YYYY-MM-DD`, `--until-date YYYY-MM-DD`, `--date-field {upload,extraction}`, `--max-controls` |
+| `combined` | Builds sample+control+discrepancy payload in a single JSON | All date filters plus `--exclude-from-sop`, `--exclude-from-control` |
 
-### Example: Sample-Only Report
+### Example: Sample-Only Report with Unified Dates
 
 ```bash
 python3 -m reports.extract_report_with_curves sample \
   --db ~/dbs/quest_prod_aug2025.db \
-  --output output_data/sample_report_since20240601.json \
+  --output output_data/sample_report.json \
   --since-date 2024-06-01 \
+  --until-date 2025-01-31 \
   --max-controls 3
 ```
 
-### Example: Combined JSON + HTML Bundle
+### Example: Combined JSON with Fine-Grained Dates
 
 ```bash
 python3 -m reports.extract_report_with_curves combined \
   --db ~/dbs/quest_prod_aug2025.db \
-  --output output_data/unified_report_since20240601.json \
-  --sample-since-date 2024-06-01 \
-  --control-since-date 2024-06-01 \
-  --discrepancy-since-date 2024-06-01 \
-  --discrepancy-date-field extraction \
-  --html-output output_data/unified_report_since20240601.html \
-  --html-max-per-category 0
+  --output output_data/combined_report.json \
+  --sample-since-date 2024-06-01 --sample-until-date 2025-01-31 \
+  --control-since-date 2024-06-01 --control-until-date 2025-01-31 \
+  --discrepancy-since-date 2024-01-01 --discrepancy-date-field extraction \
+  --exclude-from-control "%SIGMOID%" "%WESTGARDS%" \
+  --suppress-unaffected-controls
+```
+
+### Date Filtering Reference
+
+**Unified filters** (apply to all reports):
+- `--since-date YYYY-MM-DD` - Start date for all reports
+- `--until-date YYYY-MM-DD` - End date for all reports
+
+**Fine-grained filters** (override unified filters):
+- `--sample-since-date` / `--sample-until-date` - Sample-specific dates
+- `--control-since-date` / `--control-until-date` - Control-specific dates
+- `--discrepancy-since-date` / `--discrepancy-until-date` - Discrepancy-specific dates
+- `--discrepancy-date-field {upload,extraction}` - Which date to filter on (default: upload)
+
+### Date Fields Used (Important!)
+
+Different report types use different SQL date columns:
+
+| Report | Date Used | Column | Meaning |
+|--------|-----------|--------|---------|
+| **Sample** | Extraction | `w.created_at` | When the well was created/processed |
+| **Control** | Extraction | `w.created_at` (or `pw.created_at` for parent) | When the control well was created |
+| **Discrepancy** | Configurable | `r.created_at` (upload, default) OR `w.created_at` (extraction) | Upload date or extraction date |
+
+**Important:** Discrepancies default to **upload date** while samples/controls use **extraction date**. This means results uploaded on 2024-06-01 but extracted on 2024-05-01 will appear in Discrepancy reports but NOT in Sample/Control reports.
+
+**Recommendation:** For consistent reporting across all types, use:
+```bash
+--since-date 2024-06-01 --until-date 2025-01-31 \
+--discrepancy-date-field extraction
+```
+
+This makes all three reports filter by extraction date.
+
+## Processing Options
+
+### Error Exclusion Filters
+
+Exclude specific error codes from reports using pattern matching (supports wildcards):
+
+```bash
+python3 -m reports.generate_full_report \
+  --db-type qst \
+  --db ~/dbs/quest_prod_aug2025.db \
+  --since-date 2024-06-01 --until-date 2025-01-31 \
+  --exclude-from-sop "%SIGMOID%" \
+  --exclude-from-control "%SIGMOID%" "%WESTGARDS%" \
+  --output output_data/qst_report
+```
+
+**Flags:**
+- `--exclude-from-sop ERROR_CODE [ERROR_CODE ...]` - Exclude patterns from sample SOP report
+- `--exclude-from-control ERROR_CODE [ERROR_CODE ...]` - Exclude patterns from control report and affected samples
+
+**Examples:**
+- `"%SIGMOID%"` - Excludes any error code containing "SIGMOID"
+- `"WESTGARDS_FAILED"` - Excludes exact error code match
+
+### Control Report Optimization
+
+```bash
+--suppress-unaffected-controls
+```
+
+Excludes control errors that have no associated affected samples. This reduces clutter in control reports when controls pass but have minor configuration issues.
+
+### Sample Error Options
+
+```bash
+--sample-include-label-errors
+```
+
+Include label/setup errors in the sample report (excluded by default as they typically affect entire plates, not individual samples).
+
+### Performance and Testing
+
+```bash
+--max-controls 5              # Limit control curves extracted per target (default: 3)
+--limit 100                   # Limit total records processed (useful for testing)
+--test                        # Test mode: limits to 100 records automatically
 ```
 
 ## HTML Renderer Features

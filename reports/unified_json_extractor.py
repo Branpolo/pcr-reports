@@ -1749,14 +1749,18 @@ def main():
     parser.add_argument('--db', required=True, help='Path to SQLite database')
     parser.add_argument('--output', required=True, help='Output JSON file path')
 
-    # Date range arguments
-    parser.add_argument('--sample-since-date', help='Sample wells on/after this date (YYYY-MM-DD)')
-    parser.add_argument('--sample-until-date', help='Sample wells on/before this date (YYYY-MM-DD)')
-    parser.add_argument('--control-since-date', help='Control wells on/after this date (YYYY-MM-DD)')
-    parser.add_argument('--control-until-date', help='Control wells on/before this date (YYYY-MM-DD)')
-    parser.add_argument('--discrepancy-since-date', default='2024-01-01',
-                       help='Discrepancy wells on/after this date (default: 2024-01-01)')
-    parser.add_argument('--discrepancy-until-date', help='Discrepancy wells on/before this date (YYYY-MM-DD)')
+    # Unified date range (applies to all reports)
+    parser.add_argument('--since-date', help='Unified start date for all reports (YYYY-MM-DD). Overridden by report-specific filters.')
+    parser.add_argument('--until-date', help='Unified end date for all reports (YYYY-MM-DD). Overridden by report-specific filters.')
+
+    # Fine-grained date range arguments (override unified --since-date and --until-date)
+    parser.add_argument('--sample-since-date', help='Sample wells on/after this date (YYYY-MM-DD). Overrides --since-date.')
+    parser.add_argument('--sample-until-date', help='Sample wells on/before this date (YYYY-MM-DD). Overrides --until-date.')
+    parser.add_argument('--control-since-date', help='Control wells on/after this date (YYYY-MM-DD). Overrides --since-date.')
+    parser.add_argument('--control-until-date', help='Control wells on/before this date (YYYY-MM-DD). Overrides --until-date.')
+    parser.add_argument('--discrepancy-since-date',
+                       help='Discrepancy wells on/after this date (YYYY-MM-DD). Overrides --since-date. Defaults to 2024-01-01.')
+    parser.add_argument('--discrepancy-until-date', help='Discrepancy wells on/before this date (YYYY-MM-DD). Overrides --until-date.')
     parser.add_argument('--discrepancy-date-field', choices=['upload', 'extraction'], default='upload',
                        help='Date field for discrepancy filtering (default: upload)')
 
@@ -1783,16 +1787,26 @@ def main():
     if args.test:
         args.limit = min(args.limit or 100, 100)
 
+    # Handle unified vs fine-grained date filters
+    # Fine-grained filters override unified filters
+    sample_since = args.sample_since_date or args.since_date
+    sample_until = args.sample_until_date or args.until_date
+    control_since = args.control_since_date or args.since_date
+    control_until = args.control_until_date or args.until_date
+    # Discrepancy has a default of 2024-01-01 if not specified
+    discrepancy_since = args.discrepancy_since_date or args.since_date or '2024-01-01'
+    discrepancy_until = args.discrepancy_until_date or args.until_date
+
     # Create configuration
     config = ExtractorConfig(
         db_path=args.db,
         db_type=args.db_type,
-        sample_since_date=args.sample_since_date,
-        sample_until_date=args.sample_until_date,
-        control_since_date=args.control_since_date,
-        control_until_date=args.control_until_date,
-        discrepancy_since_date=args.discrepancy_since_date,
-        discrepancy_until_date=args.discrepancy_until_date,
+        sample_since_date=sample_since,
+        sample_until_date=sample_until,
+        control_since_date=control_since,
+        control_until_date=control_until,
+        discrepancy_since_date=discrepancy_since,
+        discrepancy_until_date=discrepancy_until,
         discrepancy_date_field=args.discrepancy_date_field,
         max_controls=args.max_controls,
         limit=args.limit,
