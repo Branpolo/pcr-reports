@@ -807,6 +807,18 @@ class UnifiedJSONExtractor:
         repeated = self._fetch_discrepancy_repeated(date_col)
         print(f"    Found {len(repeated)} samples repeated")
 
+        # Deduplicate wells across categories using priority order
+        acted_upon, repeated, ignored, dedupe_stats = self._deduplicate_discrepancies(
+            acted_upon, repeated, ignored
+        )
+        total_deduped = sum(dedupe_stats.values())
+        if total_deduped:
+            print(
+                f"    Deduplicated {total_deduped} discrepancies across categories "
+                f"(acted: {dedupe_stats['acted_upon']}, repeated: {dedupe_stats['samples_repeated']}, "
+                f"ignored: {dedupe_stats['ignored']})"
+            )
+
         # Combine all errors
         all_errors = acted_upon + ignored + repeated
 
@@ -836,6 +848,48 @@ class UnifiedJSONExtractor:
             'errors': all_errors,
             'well_curves': well_curves
         }
+
+    def _deduplicate_discrepancies(
+        self,
+        acted_upon: List[Dict],
+        repeated: List[Dict],
+        ignored: List[Dict]
+    ) -> Tuple[List[Dict], List[Dict], List[Dict], Dict[str, int]]:
+        """Ensure each well appears in at most one discrepancy category.
+
+        Priority order (highest first): acted_upon -> samples_repeated -> ignored.
+        """
+
+        priority = [
+            ('acted_upon', acted_upon),
+            ('samples_repeated', repeated),
+            ('ignored', ignored)
+        ]
+
+        seen_wells = set()
+        deduped = {
+            'acted_upon': [],
+            'samples_repeated': [],
+            'ignored': []
+        }
+        dropped_counts = {k: 0 for k, _ in priority}
+
+        for category, records in priority:
+            for record in records:
+                well_id = str(record['well_id'])
+                if well_id in seen_wells:
+                    dropped_counts[category] += 1
+                    continue
+
+                deduped[category].append(record)
+                seen_wells.add(well_id)
+
+        return (
+            deduped['acted_upon'],
+            deduped['samples_repeated'],
+            deduped['ignored'],
+            dropped_counts
+        )
 
     def _fetch_discrepancy_acted_upon(self, date_col: str) -> List[Dict]:
         """Fetch acted upon discrepancies (result changed)"""

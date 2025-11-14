@@ -72,12 +72,20 @@ def calculate_summary_statistics(data):
     total_samples_affected_by_controls = sum(v.get('samples_affected_by_controls', 0) for v in error_stats.values())
     total_classification_affected = sum(v.get('classification_errors_affected', 0) for v in error_stats.values())
 
+    # Use displayed cohorts as the denominator so the cards add up cleanly
+    displayed_total = (
+        total_reported
+        + total_sop_affected
+        + total_samples_affected_by_controls
+        + total_classification_affected
+    )
+
     overall_summary = {
         'reported': total_reported,
         'sop_affected': total_sop_affected,
         'control_affected': total_samples_affected_by_controls,
         'classification_affected': total_classification_affected,
-        'total': total_samples,  # Use actual total_samples count instead of sum
+        'total': displayed_total,
         'controls_total': total_controls,
         'controls_passed': total_controls_passed,
     }
